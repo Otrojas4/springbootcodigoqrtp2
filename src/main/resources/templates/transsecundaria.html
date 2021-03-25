@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>TransformacionS</title>
+<link rel="icon" type="image/png" sizes="32x32"
+	href="/imagenes/favicon-32x32.png" />
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css"></link>
+
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
+
+</head>
+<body>
+	<!-- Los fragment se insertan ya sea con th:include o th:replace -->
+	<!-- th:include simplemente se inserta dentro del espacio asignado -->
+	<!-- th:replace remplaza todo el espacio asignado por el fragment correspondiente -->
+	<!-- sintaxis th:include/replace="rutafragment :: Nombre del fragment -->
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container">
+		<!-- th:action toma la accion de un form que se ejecutara por medio de un boton-->
+		<!-- @{} Expresion de enlace -->
+		<!-- ${} Declaracion de Variable -->
+		<!-- th:object declara un objeto que sera usado por los *{} -->
+		
+		
+		<form th:action="@{/transsecundaria/registrar}" method="post" th:object="${transsecundaria}"
+			enctype="multipart/form-data">
+			
+
+				<div class="form-group">
+					<label for="codigos">CODIGO DE TRANSFORMACION PRIMARIA:</label> <input type="text"
+						th:field="*{CodTransSec}" class="form-control" id="codigos"></input>
+					<!-- th:if Para establecer condiciones, las variables solo son booleanas -->
+					<!-- #{} Expresion de mensaje -->
+					<div class="alert alert-danger"
+						th:if="${#fields.hasErrors('CodTransSec')}" th:errors="*{CodTransSec}"></div>
+						
+						<label for="codmaqs1">CODIGO DE MAQUINARIA 1:</label> <input type="text"
+						th:field="*{CodMaquinaria1}" class="form-control" id="codmaqs1"></input>
+					<!-- th:if Para establecer condiciones, las variables solo son booleanas -->
+					<!-- #{} Expresion de mensaje -->
+					<div class="alert alert-danger"
+						th:if="${#fields.hasErrors('CodMaquinaria1')}" th:errors="*{CodMaquinaria1}"></div>
+						
+						
+						<label for="pors1">PORCENTAJE DE EFECIENCIA MAQ 1:</label> <input type="text"
+						th:field="*{Porcentaje1}" class="form-control" id="pors1"></input>
+					<!-- th:if Para establecer condiciones, las variables solo son booleanas -->
+					<!-- #{} Expresion de mensaje -->
+					<div class="alert alert-danger"
+						th:if="${#fields.hasErrors('Porcentaje1')}" th:errors="*{Porcentaje1}"></div>
+						
+						
+						
+										<label for="codmaqs2">CODIGO DE MAQUINARIA 2:</label> <input type="text"
+						th:field="*{CodMaquinaria2}" class="form-control" id="codmaqs2"></input>
+					<!-- th:if Para establecer condiciones, las variables solo son booleanas -->
+					<!-- #{} Expresion de mensaje -->
+					<div class="alert alert-danger"
+						th:if="${#fields.hasErrors('CodMaquinaria2')}" th:errors="*{CodMaquinaria2}"></div>
+						
+						
+						<label for="pors2">PORCENTAJE DE EFECIENCIA MAQ 2:</label> <input type="text"
+						th:field="*{Porcentaje2}" class="form-control" id="pors2"></input>
+					<!-- th:if Para establecer condiciones, las variables solo son booleanas -->
+					<!-- #{} Expresion de mensaje -->
+					<div class="alert alert-danger"
+						th:if="${#fields.hasErrors('Porcentaje2')}" th:errors="*{Porcentaje2}"></div>
+						
+						
+					
+						
+
+					<label for="fechas">FECHA DE ELABORACION:</label> <input
+						type="date" th:field="*{Fechaelaboracions}" class="form-control"
+						id="fechas"></input>
+					<!-- th:errors Se encarga del manejo de errores -->
+					<div class="alert alert-danger"
+						th:if="${#fields.hasErrors('Fechaelaboracions')}"
+						th:errors="*{Fechaelaboracions}"></div>
+						
+	
+						
+							<div class="form-group">
+					<label for="tiempos">TIEMPO DE ELABORACIÓN:</label> <input type="text"
+						th:field="*{TiempoElabos}" class="form-control" id="tiempos"></input>
+					<div class="alert alert-danger"
+						th:if="${#fields.hasErrors('TiempoElabos')}" th:errors="*{TiempoElabos}"></div>
+				</div>
+						
+		
+						
+						
+					
+			
+				</div>
+
+
+			<button type="submit" class="btn btn-primary">Aceptar</button>
+			<a href="/transsecundaria/listar" class="btn btn-danger">Cancelar</a>
+
+		</form>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

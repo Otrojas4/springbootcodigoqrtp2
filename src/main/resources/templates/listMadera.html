@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Productos</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/imagenes/favicon-32x32.png"/>
+<script type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.js"></script>	
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css"></link>
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+
+	<div class="container">
+		<form id="myform">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<a style="border-bottom-color: green" th:href="@{/mad/irRegistrar}"
+						id="add-row" type="button"
+						class="btn btn-primary btn-md left-block"> <span
+						class="glyphicon glyphicon-plus"></span> PRODUCTO
+					</a>
+				
+					
+					<table class="table table-bordered table-hover table-striped"
+						id="tab_logic">
+						<thead>
+							<tr>
+								<th class="text-center">ID</th>
+								<th class="text-center">CODIGO DE PRODUCTO</th>
+								<th class="text-center">CODIGO GTF</th>
+								<th class="text-center">NOMBRE PRODUCTO</th>
+								<th class="text-center">NOMBRE ASERRADERO</th>
+								<th class="text-center">FECHA ELABORACION</th>
+								<th class="text-center">CODIGO PLANCHA</th>
+								<th class="text-center">TIEMPO ELABORACION</th>
+								<th class="text-center">TIPO MADERA</th>
+								<th class="text-center">COD TRANSFORMACION PRI</th>
+								<th class="text-center">COD TRANSFORMACION SEC</th>
+								<th class="text-center">OPERACIÓN</th>
+								<th class="text-center">OPERACIÓN</th>
+								<th class="text-center">QR CODE</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="p: ${listaMaderas}">
+							<!-- th:text muestra una linea de texto -->
+								<td th:text="${p.id}"></td>
+								<td th:text="${p.codProducto}"></td>
+								<td th:text="${p.CodGuiaForestal}"></td>
+								<td th:text="${p.NombreProducto}"></td>
+								<td th:text="${p.NombreAserradero}"></td>
+								<td th:text="${#dates.format(p.Fechaelaboracion,'dd/MM/yyyy')}"></td>
+								<td th:text="${p.codPlancha}"></td>
+								<td th:text="${p.TiempoElabo}"></td>
+								<td th:text="${p.TipoMadera}"></td>
+								  <td th:text="${p.transprimaria.CodTransPri}"></td>
+									<td th:text="${p.transsecundaria.CodTransSec}"></td>
+								
+								<!-- th:href Redirecciona -->
+								<td><a th:href="@{/mad/eliminar/}+${p.id}">Eliminar</a></td>
+								<td><a th:href="@{/mad/verMad/} + ${p.id}">Ver</a></td>
+                   				 <td><img th:if="${#strings.length(p.codProducto) > 0}"
+                            class="img-thumbnail rounded" style="max-width:100%;"
+							th:src="@{/mad/qrcode/${p.codProducto}}"
+							th:alt="@{/mad/verMad/${p.codProducto}}"/></td>
+
+							</tr>
+						</tbody>
+
+					</table>
+
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

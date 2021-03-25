@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>TransSecundaria</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/imagenes/favicon-32x32.png"/>
+<script type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.js"></script>	
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css"></link>
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+
+	<div class="container">
+		<form id="myform">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<a style="border-bottom-color: green" th:href="@{/transsecundaria/irRegistrar}"
+						id="add-row" type="button"
+						class="btn btn-primary btn-md left-block"> <span
+						class="glyphicon glyphicon-plus"></span> TRANSSECUNDARIA
+					</a>
+				
+				<table class="table table-bordered table-hover table-striped"
+						id="tab_logic">
+						<thead>
+							<tr>
+								<th class="text-center">ID</th>
+								<th class="text-center">COD DE TRANSPRIMARIA</th>
+								<th class="text-center">COD MAQ1</th>
+								<th class="text-center">EFICIENCIA MAQ1</th>
+									<th class="text-center">COD MAQ2</th>
+								<th class="text-center">EFICIENCIA MAQ2</th>
+								<th class="text-center">FECHA ELABORACION</th>
+								<th class="text-center">TIEMPO ELABORACION</th>
+								<th class="text-center">OPERACIÓN</th>
+								
+						
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="z: ${listaTransSecundarias}">
+							<!-- th:text muestra una linea de texto -->
+								<td th:text="${z.idSec}"></td>
+								<td th:text="${z.CodTransSec}"></td>
+								<td th:text="${z.CodMaquinaria1}"></td>
+								<td th:text="${z.Porcentaje1}"></td>
+								<td th:text="${z.CodMaquinaria2}"></td>
+								<td th:text="${z.Porcentaje2}"></td>
+								<td th:text="${#dates.format(z.Fechaelaboracions,'dd/MM/yyyy')}"></td>
+								<td th:text="${z.TiempoElabos}"></td>
+								
+								
+								<!-- th:href Redirecciona -->
+								<td><a th:href="@{/transsecundaria/eliminar?id=}+${z.idSec}">Eliminar</a></td>
+								
+                   			
+
+							</tr>
+						</tbody>
+
+					</table>
+
+
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

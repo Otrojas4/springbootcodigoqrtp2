@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>SB Admin - Start Bootstrap Template</title>
+<!-- Bootstrap core CSS-->
+<link rel="stylesheet"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!-- Custom fonts for this template-->
+<link rel="stylesheet"
+	th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" />
+<!-- Page level plugin CSS-->
+<link rel="stylesheet"
+	th:href="@{/vendor/datatables/dataTables.bootstrap4.css}" />
+<!-- Custom styles for this template-->
+<link rel="stylesheet" th:href="@{/css/sb-admin.css}" />
+</head>
+
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+	
+	<div class="content-wrapper">
+		<div class="container-fluid">
+
+			<div class="container py-4">
+
+				<div class="card bg-light">
+					<div class="card-header bg-warning" th:text="${titulo}"></div>
+					<div class="card-body">
+
+						<img th:if="${#strings.length(mad.foto) > 0}"
+							class="img-thumbnail rounded float-left" style="max-width: 17%;"
+							th:src="@{'/mad/uploads/' + ${mad.foto}}"
+							th:alt="${mad.foto}" />
+
+						<ul class="list-group">
+							<li class="list-group-item" th:text="${mad.codProducto}"></li>
+							<li class="list-group-item" th:text="${mad.CodGuiaForestal}"></li>
+							<li class="list-group-item" th:text="${mad.NombreProducto}"></li>
+							<li class="list-group-item" th:text="${mad.NombreAserradero}"></li>
+						</ul>
+
+					</div>
+				</div>
+
+			</div>
+			
+
+</div></div>
+	
+</body>
+
+
+</html>
+
+
