@@ -7,7 +7,7 @@
 	<groupId>pe.edu.upc.spring</groupId>
 	<artifactId>PetShop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>PetShop</name>
 	<description>Demo project for Spring Boot</description>
