@@ -20,4 +20,5 @@ jobs:
         with:
           app-name: 'spring-boot-wood-qr'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
-          package: '${{ github.workspace }}/target/*.jar'
+          package: '${{ github.workspace }}/target/*.war'
+          # // normalmente seria un .jar pero esta vez es un .war
