@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
 <meta charset="UTF-8"></meta>
 <title>Productos</title>
 <link rel="icon" type="image/png" sizes="32x32" href="/imagenes/favicon-32x32.png"/>
@@ -63,14 +64,15 @@
 								<td th:text="${p.TipoMadera}"></td>
 								  <td th:text="${p.transprimaria.CodTransPri}"></td>
 									<td th:text="${p.transsecundaria.CodTransSec}"></td>
-								
+		
 								<!-- th:href Redirecciona -->
 								<td><a th:href="@{/mad/eliminar/}+${p.id}">Eliminar</a></td>
-								<td><a th:href="@{/mad/verMad/} + ${p.id}">Ver</a></td>
-                   				 <td><img th:if="${#strings.length(p.codProducto) > 0}"
-                            class="img-thumbnail rounded" style="max-width:100%;"
+								<td><a th:href="@{/mad/verMad/} + ${p.id}">VerProducto</a></td>
+								<td><a th:href="@{/mad/irwriteQR/} + ${p.id}">QR</a></td>
+                   				<!--  <td><img th:if="${#strings.length(p.codProducto) > 0}"
+                            class="img-thumbnail rounded" style="max-width:900%;"
 							th:src="@{/mad/qrcode/${p.codProducto}}"
-							th:alt="@{/mad/verMad/${p.codProducto}}"/></td>
+							th:alt="${p.codProducto}"/></td>-->
 
 							</tr>
 						</tbody>
