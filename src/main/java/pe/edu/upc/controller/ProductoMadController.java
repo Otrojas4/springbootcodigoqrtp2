@@ -1,16 +1,22 @@
 package pe.edu.upc.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
+
 import java.net.MalformedURLException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.imageio.ImageIO;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,12 +25,25 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.Result;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 
 import pe.edu.upc.entity.ProductoMad;
@@ -32,7 +51,7 @@ import pe.edu.upc.service.IProductoMadService;
 import pe.edu.upc.service.ITransPrimariaService;
 import pe.edu.upc.service.ITransSecundariaService;
 import pe.edu.upc.service.IUploadFileService;
-import pe.edu.upc.serviceImpl.ZHingHelper;
+
 
 
 
@@ -49,6 +68,9 @@ public class ProductoMadController {
 	
 	@Autowired
 	private ITransSecundariaService tsService;
+	
+	@Autowired
+	private ResourceLoader resourceLoader;
 	
 	@RequestMapping("/bienvenido")
 	public String irRaceBienvenido() {
@@ -152,6 +174,7 @@ public class ProductoMadController {
 				}
 
 				boolean flag = madService.insertar(objMad);
+				
 				if (flag) {
 					return "redirect:/mad/listar";
 				} else {
@@ -182,8 +205,10 @@ public class ProductoMadController {
 			}
 				
 			
+
+			
 			@RequestMapping("/actualizar")
-			public String actualizar(@ModelAttribute @Valid ProductoMad objMad, BindingResult binRes, Model model,
+			public String actualizarsi(@ModelAttribute @Valid ProductoMad objMad, BindingResult binRes, Model model,
 					RedirectAttributes objRedir) throws ParseException {
 				if (binRes.hasErrors()) {
 					return "redirect:/mad/listar";
@@ -199,21 +224,23 @@ public class ProductoMadController {
 						return "redirect:/mad/listar";
 					}
 				}
-			}
+			}		
 			
-			
-			
-			@RequestMapping("/modificar/{id}")
-			public String modificar(@PathVariable int id, Model model, RedirectAttributes objRedir) {
+		@RequestMapping("/irwriteQR/{id}")
+			public String irwriteQR(@PathVariable int id, Model model, RedirectAttributes objRedir) throws WriterException, IOException {
 				ProductoMad objMad = madService.listarId(id);
-				if (objMad == null) {
-					objRedir.addFlashAttribute("mensaje", "Ocurrió un error");
-					return "redirect:/mad/listar";
-				} else {
-					
-					model.addAttribute("mad", objMad);
-					return "mad";
-				}
+				String qrCodePath = writeQR(objMad);
+				model.addAttribute("code", qrCodePath);
+	
+				return "QRcode";
+			
+			}
+			@GetMapping("/readQR")
+			public String verifyQR(@RequestParam(value="qrImage") String qrImage, Model model) throws Exception {
+				model.addAttribute("content", readQR(qrImage));
+				model.addAttribute("code", qrImage);
+				return "QRcode";
+
 			}
 			
 			
@@ -242,23 +269,42 @@ public class ProductoMadController {
 				return "listMadera";
 			}
 			
-			
+			/*
 		
-			@RequestMapping(value = "/qrcode/{codProducto}",method = RequestMethod.GET)
-			public void qrcode(@PathVariable(value = "codProducto") String codProducto , HttpServletResponse response) throws Exception{
+			@RequestMapping(value = "/qrcode/{enlace}",method = RequestMethod.GET)
+			public void qrcode(@PathVariable("enlace") String enlace , HttpServletResponse response) throws Exception{
 				
 				response.setContentType("image/png");
 				OutputStream outputStream = response.getOutputStream();
-				outputStream.write(ZHingHelper.getQRCodeImage(codProducto, 200, 200));
+				outputStream.write(ZHingHelper.getQRCodeImage(enlace, 200, 200));
 				outputStream.flush();
 				outputStream.close();
 				
 				
+			}*/
+			
+		
+	/* CAMBIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA PARA USAR EN LOCAL HOST EL LINK HA ENCRIPTAR*/
+			private String writeQR(ProductoMad request) throws WriterException, IOException {
+				String qcodePath = "src/main/resources/static/imagenes/" + request.getCodProducto() + "-QRCode.png";
+				QRCodeWriter qrCodeWriter = new QRCodeWriter();
+				BitMatrix bitMatrix = qrCodeWriter.encode("http://spring-boot-wood-qr.azurewebsites.net/mad/verMad/" + request.getId(), BarcodeFormat.QR_CODE, 250, 250);
+				Path path = FileSystems.getDefault().getPath(qcodePath);
+				MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+				return "/imagenes/" + request.getCodProducto()+ "-QRCode.png";
 			}
 			
-			
-	
+			private String readQR(String qrImage) throws Exception {
+				final Resource fileResource = resourceLoader.getResource("classpath:static/" + qrImage);
+				File QRfile = fileResource.getFile();
+				BufferedImage bufferedImg = ImageIO.read(QRfile);
+				LuminanceSource source = new BufferedImageLuminanceSource(bufferedImg);
+				BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+				Result result = new MultiFormatReader().decode(bitmap);
+				System.out.println("Barcode Format: " + result.getBarcodeFormat());
+				System.out.println("Content: " + result.getText());
+				return result.getText();
 
-			
+			}
 			
 }
