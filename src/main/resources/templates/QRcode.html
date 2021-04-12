@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>QRcode</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/imagenes/favicon-32x32.png"/>
+<script type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.js"></script>	
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css"></link>
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div class="container" align="center">
+		<div class="card" style="width: 600px" align="center">
+			<img class="card-img-top" th:src="${code}" th:alt="${code}"
+				style="width: 100%" />
+		<!-- 	<div class="card-body" align="center">
+				<a th:href="@{'/readQR?qrImage=' + ${code}}" class="btnbtn-primary">Read
+					QRCode</a>
+			</div> -->
+				<a style="border-bottom-color: green" th:href="@{/mad/listar}"
+						id="add-row" type="button"
+						class="btn btn-primary btn-md left-block"> <span
+						class="glyphicon glyphicon-circle-arrow-left"></span> Volver
+					</a>
+		</div>
+		<p th:text="${content}" style="color: green;"></p>
+	</div>
+</body>
+</html>
