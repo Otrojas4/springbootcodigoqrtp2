@@ -34,7 +34,7 @@
 			
 
 				<div class="form-group">
-					<label for="codigos">CODIGO DE TRANSFORMACION PRIMARIA:</label> <input type="text"
+					<label for="codigos">CODIGO DE TRANSFORMACION SECUNDARIA:</label> <input type="text"
 						th:field="*{CodTransSec}" class="form-control" id="codigos"></input>
 					<!-- th:if Para establecer condiciones, las variables solo son booleanas -->
 					<!-- #{} Expresion de mensaje -->
@@ -88,7 +88,7 @@
 	
 						
 							<div class="form-group">
-					<label for="tiempos">TIEMPO DE ELABORACIÓN:</label> <input type="text"
+					<label for="tiempos">TIEMPO DE ELABORACIÃ“N:</label> <input type="text"
 						th:field="*{TiempoElabos}" class="form-control" id="tiempos"></input>
 					<div class="alert alert-danger"
 						th:if="${#fields.hasErrors('TiempoElabos')}" th:errors="*{TiempoElabos}"></div>
